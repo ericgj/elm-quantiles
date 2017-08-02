@@ -64,13 +64,11 @@ Note an empty list of data results in `Nothing`.
 # Predefined interpolation functions
 
 These correspond to the R language types 1 to 9. For implementation details, see 
-[wikipedia][] and [R sample quantiles][rlang] documentation.
+[wikipedia](https://en.wikipedia.org/wiki/Quantile) and 
+[R sample quantiles](https://www.rdocumentation.org/packages/stats/versions/3.4.1/topics/quantile) 
+documentation.
 
 @docs r1, r2, r3, r4, r5, r6, r7, r8, r9
-
-
-[wikipedia]: https://en.wikipedia.org/wiki/Quantile
-[rlang]: https://www.rdocumentation.org/packages/stats/versions/3.4.1/topics/quantile
 
 -}
 
@@ -92,7 +90,7 @@ sort =
 {-| Calculate a list of quantiles using the given _interpolation function_.
 
 In most cases you will want to use one of the interpolation functions defined
-by this module, named `r1` to `r9`, following the naming convention used by `R`.
+by this module, named `r1` to `r9`, following the naming convention used by R.
 
 See below, 
 [Predefined interpolation functions](#predefined-interpolation-functions).

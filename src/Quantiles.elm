@@ -1,5 +1,7 @@
 module Quantiles exposing 
-    ( quantilesWith
+    ( quantiles
+    , quantile
+    , quantilesWith
     , quantileWith
     , quantilesR1
     , quantilesR2
@@ -34,6 +36,11 @@ module Quantiles exposing
 {-| Calculate quantiles, using various rounding/interpolation functions 
 (or providing your own).
 
+# Sorting
+
+Before calling any quantile function, you must guarantee it is a sorted
+`List Float`.
+
 @docs sort
 
 # Single quantiles
@@ -41,7 +48,7 @@ module Quantiles exposing
 Quantiles are specified as a percentile between 0 and 1.
 Note an empty list of data results in `Nothing`.
 
-@docs quantileWith, quantileR1, quantileR2, quantileR3, quantileR4, quantileR5, quantileR6, quantileR7, quantileR8, quantileR9
+@docs quantile, quantileWith, quantileR1, quantileR2, quantileR3, quantileR4, quantileR5, quantileR6, quantileR7, quantileR8, quantileR9
 
 
 # Multiple quantiles
@@ -51,17 +58,19 @@ are returned as a list matching the specified percentiles.
 
 Note an empty list of data results in `Nothing`.
 
-@docs quantilesWith, quantilesR1, quantilesR2, quantilesR3, quantilesR4, quantilesR5, quantilesR6, quantilesR7, quantilesR8, quantilesR9
+@docs quantiles, quantilesWith, quantilesR1, quantilesR2, quantilesR3, quantilesR4, quantilesR5, quantilesR6, quantilesR7, quantilesR8, quantilesR9
 
 
 # Predefined interpolation functions
 
-For implementation details, see [wikipedia][].
+These correspond to the R language types 1 to 9. For implementation details, see 
+[wikipedia][] and [R sample quantiles][rlang] documentation.
 
 @docs r1, r2, r3, r4, r5, r6, r7, r8, r9
 
 
 [wikipedia]: https://en.wikipedia.org/wiki/Quantile
+[rlang]: https://www.rdocumentation.org/packages/stats/versions/3.4.1/topics/quantile
 
 -}
 
@@ -105,6 +114,15 @@ quantilesWith method ps (TaggedList values) =
             in
                 List.map (\p -> method (clamp 0 1 p) arrayValues) ps
                     |> combine
+
+
+{-| Calculate a list of quantiles. Note: uses the R default interpolation 
+function (R-7).
+-}
+quantiles : List Float -> TaggedList Float Sorted -> Maybe (List Float)
+quantiles =
+    quantilesWith r7
+
 
 {-| Calculate a list of quantiles using the R-1 interpolation function.
 -}
@@ -185,6 +203,14 @@ quantileWith method p (TaggedList values) =
 
         _ ->
             method (clamp 0 1 p) (Array.fromList values)
+
+
+{-| Calculate a single quantile. Note: uses the R default interpolation 
+function (R-7).
+-}
+quantile : Float -> TaggedList Float Sorted -> Maybe Float
+quantile =
+    quantileWith r7
 
 
 {-| Calculate a single quantile using the R-1 interpolation function.
